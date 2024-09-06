@@ -10,6 +10,9 @@ terraform {
       source = "1Password/onepassword"
       version = "~> 2.0.0"
     }
+    pihole = {
+      source = "ryanwholey/pihole"
+    }
   }
 }
 
@@ -28,4 +31,9 @@ provider "proxmox" {
 
 provider "onepassword" {
   account = var.onepassword_account
+}
+
+provider "pihole" {
+  url = local.pihole_url
+  api_token = local.pihole_api_token
 }

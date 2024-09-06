@@ -12,6 +12,7 @@ resource "proxmox_vm_qemu" "cloud" {
   agent = 1 
 
   os_type = "cloud-init" # The OS type of the image clone
+  qemu_os = "l26"
   cores = 2 # number of CPU cores
   sockets = 1 # number of CPU sockets
   cpu = "host" # The CPU type
@@ -40,3 +41,8 @@ resource "proxmox_vm_qemu" "cloud" {
   }
 }
 
+resource "pihole_dns_record" "record" {
+  count = var.server_count
+  domain = "cloud${count.index}.${var.domain}"
+  ip     = "192.168.250.17${count.index}"
+}

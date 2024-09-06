@@ -7,20 +7,23 @@ data "onepassword_item" "proxmox_api" {
   title = "proxmox_api"
 }
 
+data "onepassword_item" "pihole_api" {
+  vault = data.onepassword_vault.Personal.uuid
+  title = "pihole_api"
+}
+
 locals {
-  # Store the section labeled "API" from item  "Proxmox PVE01" in a local variable for shortened string references
+  ## Proxmox Credentials
   section_api = data.onepassword_item.proxmox_api.section[index(data.onepassword_item.proxmox_api.section.*.label, "API")]
-
-  # Store the field value of the section "API"  in a local variable for shortened string references
   pve_api = local.section_api.field
-
   pm_api_url = local.pve_api[index(local.pve_api.*.label, "pm_api_url")].value
-
-  # Extract the API token secret field value from the "API" section of the Proxmox PVE01 item and store it in a local variable
   pm_api_token_secret = local.pve_api[index(local.pve_api.*.label, "pm_api_token_secret")].value
-
-  # Extract the API token ID field value from the "API" section of the Proxmox PVE01 item and store it in a local variable
   pm_api_token_id = local.pve_api[index(local.pve_api.*.label, "pm_api_token_id")].value
 
+  ## pihole Credentials
+  section_pihole_api = data.onepassword_item.pihole_api.section[index(data.onepassword_item.pihole_api.section.*.label, "API")]
+  ph_api = local.section_pihole_api.field
+  pihole_url = local.ph_api[index(local.ph_api.*.label, "pihole_api_url")].value
+  pihole_api_token = local.ph_api[index(local.ph_api.*.label, "pihole_api_token")].value
 }
 
